@@ -80,9 +80,9 @@ $(document).ready(function () {
 
     if (CONFIG.nightMode && CONFIG.nightMode.enable) {
       var isNightMode = false
-      var NIGHT_MODE_COOKIES_KEY = 'night_mode'
       $nightMode = $('.mode')
       isNightModeFocus = true
+      var NIGHT_MODE_COOKIES_KEY = 'night_mode'
 
       if (getNightMode()) {
         $nightMode.addClass('mode--checked')
@@ -101,6 +101,17 @@ $(document).ready(function () {
         $nightMode.addClass('mode--focus')
         $('html').toggleClass('nightmode')
       })
+
+      // Initalize default night mode.
+      const darkMode =
+        window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
+      if (
+        darkMode &&
+        darkMode.matches &&
+        !parseInt(Stun.utils.Cookies().get(NIGHT_MODE_COOKIES_KEY))
+      ) {
+        $('.mode').click()
+      }
     }
 
     $menuBtn.on('click', function (e) {
@@ -209,12 +220,9 @@ $(document).ready(function () {
   // Initializaiton
   Stun.utils.pjaxReloadHeader()
   Stun.utils.pjaxReloadScrollIcon()
-  
-  // Initalize default night mode.
-  (function(){
-    const darkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)')
-    if (darkMode && darkMode.matches) {
-      $('.mode').click()
-    }
-  })()
+  // setTimeout(function () {
+  //   setInterval(function () {
+  //     $('.sidebar-ov-author__text').text(new Date().getTime())
+  //   }, 500)
+  // }, 3000)
 })
